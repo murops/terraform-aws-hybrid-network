@@ -1,0 +1,20 @@
+# Diretórios e arquivos locais do Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfplan
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Variáveis locais com dados reais (os exemplos em stack/envs são versionados)
+*.auto.tfvars
+*.local.tfvars
+
+# Lock de provider só na stack (módulos não fixam versão exata)
+modules/**/.terraform.lock.hcl
