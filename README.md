@@ -73,7 +73,8 @@ O código é o mesmo para todos os ambientes. O que muda fica em `stack/envs/`:
 | NAT Gateway | 1 compartilhado | 1 por AZ |
 | EC2 | t3.micro | t3.small |
 | RDS | db.t4g.micro, single-AZ | db.t4g.small, Multi-AZ |
-| Proteção contra exclusão do banco | não | sim |
+| Proteção contra exclusão do banco | não | sim (obrigatória) |
+| Snapshot final ao apagar o banco | não | sim (obrigatório) |
 
 Para criar um ambiente de homologação, por exemplo, basta copiar `dev.tfvars` para `hml.tfvars`, ajustar CIDRs e tamanhos e criar o `hml.backend.hcl`.
 
@@ -84,8 +85,11 @@ Para criar um ambiente de homologação, por exemplo, basta copiar `dev.tfvars` 
 ```bash
 cd stack
 
-# 1. Ajuste o bucket em envs/dev.backend.hcl e os valores do escritório em envs/dev.tfvars
+# 1. Ajuste o bucket em envs/dev.backend.hcl e os CIDRs do escritório em envs/dev.tfvars
 terraform init -backend-config=envs/dev.backend.hcl
+
+# O IP público do firewall não fica no repositório: informe pelo ambiente
+export TF_VAR_office_public_ip="IP.DO.SEU.FIREWALL"
 
 # 2. Revise o que será criado
 terraform plan -var-file=envs/dev.tfvars -out=dev.tfplan

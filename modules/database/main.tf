@@ -66,8 +66,15 @@ resource "aws_db_instance" "this" {
   copy_tags_to_snapshot               = true
   deletion_protection                 = var.deletion_protection
   skip_final_snapshot                 = var.skip_final_snapshot
-  final_snapshot_identifier           = var.skip_final_snapshot ? null : "${var.name}-postgres-final"
-  enabled_cloudwatch_logs_exports     = ["postgresql"]
+  # Sufixo com a data de criação: um segundo ciclo criar/destruir não colide com o snapshot anterior.
+  # Definido sempre (mesmo com skip_final_snapshot = true) para poder desligar o skip depois.
+  final_snapshot_identifier       = "${var.name}-postgres-final-${formatdate("YYYYMMDDhhmmss", timestamp())}"
+  enabled_cloudwatch_logs_exports = ["postgresql"]
 
   tags = merge(var.tags, { Name = "${var.name}-postgres" })
+
+  lifecycle {
+    # o timestamp() acima só vale na criação; sem isso, todo plan mostraria diferença
+    ignore_changes = [final_snapshot_identifier]
+  }
 }
