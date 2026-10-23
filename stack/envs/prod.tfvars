@@ -10,9 +10,9 @@ database_subnet_cidrs = ["10.30.20.0/24", "10.30.21.0/24", "10.30.22.0/24"]
 single_nat_gateway    = false
 
 # exemplo: trocar pelos dados do escritório
-enable_vpn       = true
-office_public_ip = "203.0.113.10"
-office_cidrs     = ["192.168.0.0/24", "192.168.10.0/24"]
+enable_vpn = true
+# office_public_ip: não versionar; exporte TF_VAR_office_public_ip com o IP real do firewall
+office_cidrs = ["192.168.0.0/24", "192.168.10.0/24"]
 
 app_instance_type      = "t3.small"
 db_instance_class      = "db.t4g.small"

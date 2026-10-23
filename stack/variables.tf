@@ -99,4 +99,20 @@ variable "db_deletion_protection" {
   description = "Protege o banco contra exclusão."
   type        = bool
   default     = true
+
+  validation {
+    condition     = var.environment != "prod" || var.db_deletion_protection
+    error_message = "Em prod, db_deletion_protection precisa ser true."
+  }
+}
+
+variable "db_skip_final_snapshot" {
+  description = "Não cria snapshot final ao apagar o banco. Use true apenas em ambientes descartáveis."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = var.environment != "prod" || !var.db_skip_final_snapshot
+    error_message = "Em prod, o snapshot final é obrigatório (db_skip_final_snapshot = false)."
+  }
 }

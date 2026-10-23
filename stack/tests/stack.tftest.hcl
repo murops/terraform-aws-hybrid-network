@@ -119,3 +119,25 @@ run "banco_exige_duas_azs" {
 
   expect_failures = [var.database_subnet_cidrs]
 }
+
+run "prod_exige_protecao_contra_exclusao_do_banco" {
+  command = plan
+
+  variables {
+    environment            = "prod"
+    db_deletion_protection = false
+  }
+
+  expect_failures = [var.db_deletion_protection]
+}
+
+run "prod_exige_snapshot_final_do_banco" {
+  command = plan
+
+  variables {
+    environment            = "prod"
+    db_skip_final_snapshot = true
+  }
+
+  expect_failures = [var.db_skip_final_snapshot]
+}

@@ -48,7 +48,7 @@ module "database" {
   instance_class             = var.db_instance_class
   multi_az                   = var.db_multi_az
   deletion_protection        = var.db_deletion_protection
-  skip_final_snapshot        = !var.db_deletion_protection
+  skip_final_snapshot        = var.db_skip_final_snapshot
   allowed_security_group_ids = [module.app.security_group_id]
   allowed_cidrs              = var.office_cidrs
 }
